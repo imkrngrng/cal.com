@@ -613,6 +613,7 @@ const NavigationItem: React.FC<{
   const isCurrent: NavigationItemType["isCurrent"] = item.isCurrent || defaultIsCurrent;
   const current = isCurrent({ isChild: !!isChild, item, router });
   const shouldDisplayNavigationItem = useShouldDisplayNavigationItem(props.item);
+  const hasChild = (item.child?.length ?? 0) > 0;
 
   if (!shouldDisplayNavigationItem) return null;
 
@@ -622,9 +623,9 @@ const NavigationItem: React.FC<{
         href={item.href}
         aria-label={t(item.name)}
         className={classNames(
-          "hover:bg-emphasis [&[aria-current='page']]:bg-emphasis hover:text-emphasis text-default group flex items-center rounded-md py-2 px-3 text-sm font-medium",
+          `hover:bg-emphasis [&[aria-current='page']]:${hasChild ? "bg-transparent" : "bg-emphasis"} hover:text-emphasis text-default group flex items-center rounded-md py-2 px-3 text-sm font-medium`,
           isChild
-            ? `[&[aria-current='page']]:text-emphasis hidden h-8 pl-16 lg:flex lg:pl-11 [&[aria-current='page']]:bg-transparent ${
+            ? `[&[aria-current='page']]:text-emphasis hidden h-8 pl-16 lg:flex lg:pl-11 [&[aria-current='page']]:bg-emphasis ${
                 props.index === 0 ? "mt-0" : "mt-px"
               }`
             : "[&[aria-current='page']]:text-emphasis mt-0.5 text-sm"
